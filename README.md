@@ -33,5 +33,8 @@ Run `git clone https://github.com/Joeshmoe16/FinalProjectStateMachine.git` from 
 ### **2.** Hardware Dependencies
 >Currently, there are no listed hardware dependencies. This will change in future versions.
 
+### **3.** RTC Configuration
+>To be done in conjunction with the rotary encoder
+
 
  
