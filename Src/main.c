@@ -37,6 +37,7 @@
 #include "my_photos.h"
 #include "spi.h"
 
+#include "TypicalFishImage.h"
 
 
 ///////////////////////////////////////////////////
@@ -72,9 +73,13 @@ int main(void){
 	enum states curState = idle;
 	LCD_setup();
 	peripheral_setup();
+
 	WATCHDOG_RES;
 	for(;;)
 	{
+		WATCHDOG_RES;
+		SysTick_msdelay(500);
+		
 		switch(curState)
 		{
 			case idle:
@@ -111,6 +116,7 @@ int main(void){
 			default:
 				break;
 		}
+		
 	}
 }
 
@@ -130,6 +136,11 @@ void LCD_setup(void)
 	Rotate_Display(LANDSCAPE);
 
     Fill_Screen(BLACK);
+
+	DrawPaletteImage(0, 0, TypicalFish);
+	SysTick_msdelay(1000);
+
+	Fill_Screen(BLACK);	
 
 	Draw_String_BG(0,0,"EGR 326 Final Project", WHITE,BLACK,&font_ubuntu_mono_24);
 	Draw_Char_BG(TFT_WIDTH-24,TFT_HEIGHT-24,'C',BLUE,BLACK,&font_ubuntu_mono_24);

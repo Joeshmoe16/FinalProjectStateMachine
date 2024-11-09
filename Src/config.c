@@ -224,9 +224,6 @@ void gpio_init(gpioConfig_t* gpioStruct)
 			break;
 		}
 	}
-
-    
-	
 	
 }
 
