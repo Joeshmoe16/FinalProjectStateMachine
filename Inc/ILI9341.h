@@ -6,8 +6,9 @@
 #include "stm32f4xx.h"
 #include "stdio.h"
 #include "stdint.h"
+#include "bit.h"
 
-#define BIT(x) 1<<(x)
+//#define BIT(x) (1<<(x))
 
 #define TFT_WIDTH 320
 #define TFT_HEIGHT 240
@@ -284,7 +285,9 @@ void perimeterCircle(uint16_t xc, uint16_t yc, uint16_t r,uint16_t thk, uint16_t
 
 void drawCirclePerimeterCircle(uint16_t xc, uint16_t yc, uint16_t x, uint16_t y, uint16_t r, uint16_t thk, uint16_t color);
 
+void DrawPaletteImage(uint16_t x, uint16_t y, const tPaletteImage *imageData);
 
+void DrawPaletteGif(uint8_t f, uint16_t x, uint16_t y, const tPaletteGif *imageData);
 
 /*****************************************************************************/
 /*****************************************************************************/

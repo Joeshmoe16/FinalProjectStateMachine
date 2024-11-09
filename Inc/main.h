@@ -27,7 +27,7 @@
 #include "stm32f446xx.h"
 #include "i2c.h"
 
-
+#define BIT(x) (1<<(x))
 
 
 ///////////////////////////////////////////////////
@@ -66,14 +66,6 @@ typedef struct
    bool btn2Flag;
    
 } button_t;
-
-typedef struct
-{
-	uint32_t key;
-	char keys[12];
-    char usrEntry;
-	
-} keypad_t;
 
 
 ///////////////////////////////////////////////////

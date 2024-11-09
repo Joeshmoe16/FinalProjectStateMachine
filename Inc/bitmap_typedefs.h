@@ -54,6 +54,36 @@ typedef struct
     const tChar *chars;
 } tFont;
 
+/// @brief A structure for a Image With Color Palette
+/// @param dataSize is the number of pxInts
+/// @param bitSize is the number of bits per pixel
+typedef struct
+{
+		const uint32_t *imageColorData;
+	  const uint16_t *paletteData;
+    uint16_t width;
+		uint16_t height;
+    uint16_t dataSize;
+    uint8_t  bitSize;
+} tPaletteImage;
+
+/// @brief A structure for a Gif With Color Palette
+/// @param dataSize is the number of pxInts
+/// @param bitSize is the number of bits per pixel
+/// @param loopDelay is the delay between frames. 
+/// This is intended to be accessed in the main.
+typedef struct
+{
+		const uint32_t *imageColorData;
+	  const uint16_t *paletteData;
+    uint16_t width;
+		uint16_t height;
+    uint32_t dataSize;
+    uint8_t numFrames;
+    uint16_t loopDelay;
+    uint8_t  bitSize;
+} tPaletteGif;
+
 #endif // _BITMAP_TYPEDEFS_H_
 
 /* EOF */
