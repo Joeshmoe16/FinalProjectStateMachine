@@ -19,6 +19,7 @@
 ///////////////////////////////////////////////////
 //User Includes
 ///////////////////////////////////////////////////
+#define BIT(x) (1<<(x))
 #include "config.h"
 #include "stm32f4xx.h"
 #include "stdint.h"
@@ -35,6 +36,7 @@
 #include "font_freemono_mono_24.h"
 #include "my_photos.h"
 #include "spi.h"
+
 
 
 ///////////////////////////////////////////////////
@@ -65,7 +67,7 @@ int main(void){
 
 
 	
-
+	SysClockConfig(); // This line enables the clock config function to max out SPI1 clock to 45 MHZ
 
 	enum states curState = idle;
 	LCD_setup();

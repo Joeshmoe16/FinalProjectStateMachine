@@ -24,7 +24,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <stm32f446xx.h>
-#include "main.h"
+#include "bit.h"
 
 
 
@@ -32,7 +32,7 @@
 //User Defines
 ///////////////////////////////////////////////////
 
-#define BIT(x) (1<<(x)) 
+//#define BIT(x) (1<<(x)) 
 
 //#define PIN8_READ (GPIOB->IDR & BIT(8))
 //#define PIN10_READ (GPIOB->IDR & BIT(10))
