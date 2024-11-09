@@ -1,3 +1,17 @@
+/*************************************************
+ * AUTHOR(s): Tom Stutz, Joey Shotts
+ * 
+ * FILE: ILI9341.h
+ * 
+ * PROGRAM: 
+ * 
+ * DATE: (DD-MM-YYYY) 02-11-2024
+ * 
+ * 
+ * MINIMAL HEADER
+ *************************************************/
+
+
 #ifndef __ILI9341__
 #define __ILI9341__
 
@@ -6,7 +20,7 @@
 #include "stm32f4xx.h"
 #include "stdio.h"
 #include "stdint.h"
-#include "bit.h"
+#include "primary.h"
 
 //#define BIT(x) (1<<(x))
 

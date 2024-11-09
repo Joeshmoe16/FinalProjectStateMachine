@@ -1,12 +1,20 @@
-/*******************************************************************************
-* Name:             Joseph Shotts
-* Course:           EGR 326 Embedded System Design
-* Project:          DemoProject
-* File:             config.c
-* Description:      Includes functions to initialize GPIO pins and systick.
-********************************************************************************/
-
+/*************************************************
+ * AUTHOR(s): Tom Stutz, Joey Shotts
+ * 
+ * FILE: config.c
+ * 
+ * PROGRAM: 
+ * 
+ * DATE: (DD-MM-YYYY) 02-11-2024
+ * 
+ * 
+ * MINIMAL HEADER
+ *************************************************/
 #include "config.h"
+
+
+
+gpioConfig_t gpioStructConfig;
 
 /***| setup() |*****************************//*
 *Brief: 
@@ -20,6 +28,9 @@ void peripheral_setup(void){
 	gpio_setup();
 	SysTick_Init();
 	watchdog_setup();
+	debug_LED_setup();
+	usr_button_setup();
+	rotary_encoder_setup();
 	
 }
 
@@ -74,6 +85,54 @@ void watchdog_setup(void){
 	IWDG->KR = 0xCCCC;      //watchdog start
 	IWDG->KR = 0xAAAA;      //watchdog reset
 }
+
+/***| debug_LED_setup() |*****************************//*
+*Brief: 
+*	Initializes debug LED
+*Params:
+*            None
+*Returns:
+*           None
+********************************************************/
+void debug_LED_setup(void)
+{
+	gpio_usr_init(DBG_LD1_PORT,DBG_LD1,GPIO_MODER_GPO,0x00,0x00,&gpioStructConfig);
+	gpio_usr_init(DBG_LD2_PORT,DBG_LD2,GPIO_MODER_GPO,0x00,0x00,&gpioStructConfig);
+	gpio_usr_init(DBG_LD3_PORT,DBG_LD3,GPIO_MODER_GPO,0x00,0x00,&gpioStructConfig);
+
+}
+
+/***| usr_button_setup() |*****************************//*
+*Brief: 
+*	Initializes user button
+*Params:
+*            None
+*Returns:
+*           None
+********************************************************/
+void usr_button_setup(void)
+{
+	gpio_usr_init(USR_BTN_PORT,USR_BTN,GPIO_MODER_GPI,0x00,0x00,&gpioStructConfig);
+
+}
+
+/***| rotary_encoder_setup() |*****************************//*
+*Brief: 
+*	Initializes user button
+*Params:
+*            None
+*Returns:
+*           None
+********************************************************/
+void rotary_encoder_setup(void)
+{
+	gpio_usr_init(ROTARY_CLK_PORT,ROTARY_CLK,GPIO_MODER_GPI,GPIO_PUPDR_NPUPD,0x00,&gpioStructConfig);
+	gpio_usr_init(ROTARY_DT_PORT,ROTARY_DT,GPIO_MODER_GPI,GPIO_PUPDR_NPUPD,0x00,&gpioStructConfig);
+	gpio_usr_init(ROTARY_SW_PORT,ROTARY_SW,GPIO_MODER_GPI,GPIO_PUPDR_NPUPD,0x00,&gpioStructConfig);
+
+}
+
+
 
 /***| Systick_Init() |*****************************//*
 *Brief: 

@@ -24,7 +24,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <stm32f446xx.h>
-#include "bit.h"
+#include "primary.h"
 
 
 
@@ -155,6 +155,11 @@ typedef uint32_t state_t;
 void peripheral_setup(void);
 void gpio_setup(void);
 void watchdog_setup(void);
+void debug_LED_setup(void);
+void usr_button_setup(void);
+void rotary_encoder_setup(void);
+
+
 void SysTick_Init(void);
 void SysTick_msdelay(uint32_t msdelay);
 

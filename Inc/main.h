@@ -3,7 +3,7 @@
  * 
  * FILE: main.h
  * 
- * PROGRAM: egr_326_lab9_part3_master
+ * PROGRAM: 
  * 
  * DESCRIPTION: 
  * 
@@ -26,8 +26,8 @@
 #include <stdbool.h>
 #include "stm32f446xx.h"
 #include "i2c.h"
+#include "primary.h"
 
-#define BIT(x) (1<<(x))
 
 
 ///////////////////////////////////////////////////
@@ -60,6 +60,7 @@
 ///////////////////////////////////////////////////
 //User type defs
 ///////////////////////////////////////////////////
+
 typedef struct
 {
    bool btn1Flag;
@@ -67,13 +68,32 @@ typedef struct
    
 } button_t;
 
+enum states_t
+{
+	idle,
+	red,
+	green,
+	blue,
+};
+
+
+typedef struct
+{
+   enum states_t curState;
+   enum states_t selectedState;
+  
+} usrState_t;
+
+
+
 
 ///////////////////////////////////////////////////
 //User fct prtype
 ///////////////////////////////////////////////////
-uint32_t debounce_release(GPIO_TypeDef* GPIOX, uint32_t PIN);
+uint64_t debounce_release(GPIO_TypeDef* GPIOX, uint32_t PIN);
 void LCD_setup(void);
-
+void poll_encoder(void);
+void poll_encoder_press(void);
 
 
 
