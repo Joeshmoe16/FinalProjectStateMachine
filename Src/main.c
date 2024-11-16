@@ -49,8 +49,8 @@
 //User global var
 ///////////////////////////////////////////////////
 usrState_t usrState;
-
-
+RTC_t usrRTC;
+char printBuffer[MAX_CHAR_PRINT];
 //////////////////////////////////////////////////
 //User fct prtype
 ///////////////////////////////////////////////////
@@ -71,9 +71,13 @@ int main(void){
 	
 	LCD_setup();
 	peripheral_setup();
-
+	init_LCD_clock();
 	usrState.curState = idle;
 	usrState.selectedState = red;
+
+	
+	
+	
 
 
 	WATCHDOG_RES;
@@ -231,6 +235,43 @@ void poll_encoder_press(void)
 		usrState.curState = usrState.selectedState;
 
 	}
+
+}
+
+/*******
+FUNCTION: init_LCD_clock
+INPUTS: 
+OUTPUTS: 
+DESCRIPTION: 
+*******/
+void init_LCD_clock(void)
+{
+	I2C1_byteRead(RTC_ADDR,RTC_Hours,&usrRTC.hours[0]);
+	I2C1_byteRead(RTC_ADDR,RTC_Minutes,&usrRTC.minutes[0]);
+	I2C1_byteRead(RTC_ADDR,RTC_Seconds,&usrRTC.seconds[0]);
+	snprintf(printBuffer,MAX_CHAR_PRINT,"%x:%x  ", usrRTC.hours[0],usrRTC.minutes[0]);
+	Draw_String_BG(TIME_X_POS,TIME_Y_POS,printBuffer,WHITE,BLACK,&font_ubuntu_mono_24);
+
+}
+
+
+/*******
+FUNCTION: EXTI9_5_IRQHanlder
+INPUTS: 
+OUTPUTS: 
+DESCRIPTION: interrupt pin 7 handles interrupts every minute for the clock
+*******/
+extern void EXTI9_5_IRQHandler(void)
+{
+	__NOP();
+	I2C1_byteWrite(RTC_ADDR,RTC_Status,0x00);
+	I2C1_byteRead(RTC_ADDR,RTC_Hours,&usrRTC.hours[0]);
+	I2C1_byteRead(RTC_ADDR,RTC_Minutes,&usrRTC.minutes[0]);
+	I2C1_byteRead(RTC_ADDR,RTC_Seconds,&usrRTC.seconds[0]);
+	snprintf(printBuffer,MAX_CHAR_PRINT,"%x:%x  ", usrRTC.hours[0],usrRTC.minutes[0]);
+	Draw_String_BG(TIME_X_POS,TIME_Y_POS,printBuffer,WHITE,BLACK,&font_ubuntu_mono_24);
+
+	EXTI->PR |= 0x01 <<RTC_interrupt;
 
 }
 

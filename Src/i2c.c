@@ -53,8 +53,8 @@ DESCRIPTION: This function initializes i2c 1
 void I2C1_init(void)
 {
     RCC->APB1ENR |= 0x01 << 21;
-    //initialize PB8 as SCL and PB9 as SCA
     RCC->AHB1ENR |= 0x01 << 1;
+    //initialize PB8 as SCL and PB9 as SCA
     GPIOB->AFR[1] &= ~0x00FF;
     GPIOB->AFR[1] |= 0x0044;    /*PB 8 and PB9 to alternate functions*/
     GPIOB->MODER &= ~(0x000F0000);
@@ -87,7 +87,6 @@ DESCRIPTION: This function initializes i2c 1
 *******/
 int I2C1_byteWrite(char saddr, char maddr, char data)
 {
-    __disable_irq();
     volatile int tmp;
     while(I2C1->SR2 & 2);
 
@@ -98,15 +97,14 @@ int I2C1_byteWrite(char saddr, char maddr, char data)
     while(!(I2C1->SR1 & 2));
     tmp = I2C1->SR2;
 
-    // while(!(I2C1->SR1 & 0x80));
-    // I2C1->DR = maddr;
+    while(!(I2C1->SR1 & 0x80));
+    I2C1->DR = maddr;
 
     while(!(I2C1->SR1 & 0x80));
     I2C1->DR = data;
 
     while(!(I2C1->SR1 & 4));
     I2C1->CR1 |= 0x200;
-    __enable_irq();
 
     return 0;
 
@@ -149,7 +147,7 @@ int I2C1_byteRead(char saddr, char maddr, char* data)
     I2C1->CR1 |= 0x200;
 
     while(!(I2C1->SR1 & 0x40));
-    *data++ = I2C1->DR;
+    *data = I2C1->DR;
 
     return 0;
 

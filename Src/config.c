@@ -25,12 +25,14 @@ gpioConfig_t gpioStructConfig;
 *           None
 **********************************************/
 void peripheral_setup(void){
+
 	gpio_setup();
 	SysTick_Init();
 	watchdog_setup();
 	debug_LED_setup();
 	usr_button_setup();
 	rotary_encoder_setup();
+	RTC_init();
 	
 }
 
@@ -661,5 +663,36 @@ int debug_print(const char *str, ...)
 	va_end(lst);  
 }
 
+/*******
+FUNCTION: RTC_init()
+INPUTS: 
+OUTPUTS: 
+DESCRIPTION: loop for debug print function (CURRENT VERSION ONLY SUPPORTS STRING INPUT WITHOUT FORMAT SPECIFIERS)
+*******/
+void RTC_init(void)
+{
+	I2C1_init();
+	gpio_usr_init(RTC_interrupt_PORT,RTC_interrupt,GPIO_MODER_GPI,GPIO_PUPDR_PU,0x00,&gpioStructConfig);
+	interrupt_init(EXTI_PB,RTC_interrupt,EXTI_FE);
+	//set alarms
+	char test = 0;
+	I2C1_byteWrite(RTC_ADDR,RTC_Control,0x1F);
+
+	I2C1_byteWrite(RTC_ADDR,0x0D,0x80);
+	I2C1_byteWrite(RTC_ADDR,0x0C,0x80);
+	I2C1_byteWrite(RTC_ADDR,0x0B,0x80);
+	I2C1_byteWrite(RTC_ADDR,RTC_Status,0x08);
+
+	//set time
+	#ifdef TIME_INIT
+	I2C1_byteWrite(RTC_ADDR,RTC_Seconds,0x30);
+	I2C1_byteWrite(RTC_ADDR,RTC_Minutes,0x47);
+	I2C1_byteWrite(RTC_ADDR,RTC_Hours,0x19);
+	#endif
+	
+	
+
+
+}
 
 /*EOF*/
