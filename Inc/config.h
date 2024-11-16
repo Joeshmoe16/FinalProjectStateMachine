@@ -176,6 +176,7 @@ void timer_usr_init(TIM_TypeDef* TIMX, uint32_t MODE, uint32_t CH,uint32_t ICxF,
 void timer_init(timConfig_t* usrTim);
 void timer_start(TIM_TypeDef* TIMX);
 void timer_stop(TIM_TypeDef* TIMX);
+void RTC_init(void);
 
 void interrupt_init(uint32_t EXTI_GPIOX, uint32_t PIN, uint32_t EDGE_TYPE);
 
