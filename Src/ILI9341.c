@@ -1,8 +1,15 @@
-/*  Author: Jacob Clarey
- *  Date: 9/21/2024
- *  Description: This is a source file for the SPI ILI9341 driver.
- *  Notes:
- */
+/*************************************************
+ * AUTHOR(s): Tom Stutz, Joey Shotts
+ * 
+ * FILE: config.h
+ * 
+ * PROGRAM: 
+ * 
+ * DATE: (DD-MM-YYYY) 02-11-2024
+ * 
+ * 
+ * MINIMAL HEADER
+ *************************************************/
 
 #include "ILI9341.h"
 #include <stdlib.h>
@@ -987,6 +994,114 @@ void DrawPaletteGif(uint8_t f, uint16_t x, uint16_t y, const tPaletteGif *imageD
         }
 	}
 	SET_LCD_CS;
+}
+
+void Draw_Box(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t thickness, uint16_t color)
+{
+    Draw_HLine(y,w+thickness,x,thickness,color);
+    Draw_HLine(y+h,w+thickness,x,thickness,color);
+    Draw_VLine(x,h+thickness,y,thickness,color);
+    Draw_VLine(x+w,h+thickness,y,thickness,color);
+
+
+}
+
+void drawCircle(uint16_t xc, uint16_t yc, uint16_t x, uint16_t y, uint16_t color)
+{
+
+    Draw_Pixel(xc+x, yc+y, color);
+    Draw_Pixel(xc-x, yc+y, color);
+    Draw_Pixel(xc+x, yc-y, color);
+    Draw_Pixel(xc-x, yc-y, color);
+    Draw_Pixel(xc+y, yc+x, color);
+    Draw_Pixel(xc-y, yc+x, color);
+    Draw_Pixel(xc+y, yc-x, color);
+    Draw_Pixel(xc-y, yc-x, color);
+}
+
+void drawCirclePerimeterCircle(uint16_t xc, uint16_t yc, uint16_t x, uint16_t y, uint16_t r, uint16_t thk, uint16_t color)
+{
+
+    circleBres(xc+x, yc+y, r, thk, color);
+    circleBres(xc-x, yc+y, r, thk ,color);
+    circleBres(xc+x, yc-y, r, thk, color);
+    circleBres(xc-x, yc-y, r, thk, color);
+    circleBres(xc+y, yc+x, r, thk ,color);
+    circleBres(xc-y, yc+x, r, thk, color);
+    circleBres(xc+y, yc-x, r, thk, color);
+    circleBres(xc-y, yc-x, r, thk, color);
+
+}
+
+
+// Function for circle-generation
+// using Bresenham's algorithm
+void circleBres(uint16_t xc, uint16_t yc, uint16_t r,uint16_t thk, uint16_t color)
+{
+    for(size_t i = 0; i < thk; i++)
+    {
+        int x = 0, y = (r+i);
+        int d = 3 - 2 * (r+i);
+        drawCircle(xc, yc, x, y, color);
+        while (y >= x){
+        
+            // check for decision parameter
+            // and correspondingly 
+            // update d, y
+            if (d > 0) {
+                y--; 
+                d = d + 4 * (x - y) + 10;
+            }
+            else
+                d = d + 4 * x + 6;
+
+            // Increment x after updating decision parameter
+            x++;
+            
+            // Draw the circle using the new coordinates
+            drawCircle(xc, yc, x, y, color);
+            
+        }
+    }
+}
+
+void perimeterCircle(uint16_t xc, uint16_t yc, uint16_t r,uint16_t thk, uint16_t color)
+{
+    
+        int x = 0, y = (r);
+        int d = 3 - 2 * (r);
+        int i = 0;
+        drawCirclePerimeterCircle(xc, yc, x, y,r,thk, color);
+        while (y >= x)
+        {
+
+            
+                // check for decision parameter
+                // and correspondingly 
+                // update d, y
+                if (d > 0) {
+                    y--; 
+                    d = d + 4 * (x - y) + 10;
+                }
+                else
+                    d = d + 4 * x + 6;
+
+                // Increment x after updating decision parameter
+                x++;
+                
+                // Draw the circle using the new coordinates
+            if(!(i%12))
+            {
+                drawCirclePerimeterCircle(xc, yc, x, y,r,thk, color);
+                i++;
+            }
+            else
+            {
+                i++;
+            }
+            
+        }
+    
 }
 
 
