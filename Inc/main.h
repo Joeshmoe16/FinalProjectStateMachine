@@ -94,6 +94,10 @@ uint64_t debounce_release(GPIO_TypeDef* GPIOX, uint32_t PIN);
 void LCD_setup(void);
 void poll_encoder(void);
 void poll_encoder_press(void);
+void init_LCD_clock(void);
+
+extern void EXTI9_5_IRQHandler(void);
+
 
 
 
